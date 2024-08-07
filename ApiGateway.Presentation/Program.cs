@@ -1,6 +1,8 @@
 using Ocelot.Cache.CacheManager;
 using Ocelot.DependencyInjection;
 using eCommerce.SharedLibrary.DependencyInjection;
+using ApiGateway.Presentation.Middleware;
+using Ocelot.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,5 +22,7 @@ builder.Services.AddCors(options =>
 var app = builder.Build();
 
 app.UseCors();
+app.UseMiddleware<AttachSignatureToRequest>();
+app.UseOcelot().Wait();
 app.UseHttpsRedirection();
 app.Run();
